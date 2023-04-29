@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+         stage('github code checkout') {
+            steps {
+               checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/s1sh/ca4-devops.git']])
+            }
+        }
+        stage('giving aws_key'){
+            steps{
+                sh '''sudo cp /home/shubham/ansible/ansible-ec2-instance/key.yml  /var/lib/jenkins/workspace/ca4-devops/'''
+            }
+        }
+        
+        stage('ansible'){
+            steps{
+                sh '''
+                
+                sudo ansible-playbook  -e @key.yml ec2-instance.yml '''
+            }
+        }
+        
+    }
+}
