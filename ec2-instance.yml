@@ -1,0 +1,16 @@
+---
+  - name: Launching the Aws
+    hosts: localhost
+    connection: local
+    tasks:
+      - name: launch ec2
+        amazon.aws.ec2_instance:
+          name: "ca4-devops"
+          instance_type: "t2.micro"
+          image_id: "ami-02eb7a4783e7e9317"
+          region: "ap-south-1"
+          security_group: default
+          count: 1
+          state: running
+          aws_access_key: "{{ my_access_key }}"
+          aws_secret_key: "{{ my_secret_key }}"
